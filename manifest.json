@@ -1,0 +1,17 @@
+{
+  "name": "ONE MORE LEVEL",
+  "short_name": "ONE MORE LEVEL",
+  "description": "Think Fast. React Faster. Can you reach Level 100?",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050816",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "icons/one-more-level-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

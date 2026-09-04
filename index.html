@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#111827">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ONE MORE LEVEL</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#0f172a,#1d4ed8);
+color:white;
+text-align:center;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+padding:18px;
+}
+
+.screen{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+
+/* HOME */
+
+.logo{
+font-size:42px;
+font-weight:900;
+margin-top:30px;
+animation:pulse 2s infinite;
+}
+
+.tagline{
+color:#cbd5e1;
+font-size:17px;
+margin-bottom:22px;
+}
+
+.card{
+background:rgba(255,255,255,.10);
+padding:17px;
+border-radius:20px;
+margin:13px 0;
+box-shadow:0 8px 25px rgba(0,0,0,.2);
+}
+
+button{
+border:none;
+border-radius:16px;
+padding:15px 20px;
+margin:7px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+transition:.15s;
+}
+
+button:active{
+transform:scale(.92);
+}
+
+.play{
+background:#22c55e;
+color:white;
+width:92%;
+}
+
+.shopBtn{
+background:#f59e0b;
+color:white;
+width:92%;
+}
+
+.dailyBtn{
+background:#ec4899;
+color:white;
+width:92%;
+}
+
+.soundBtn{
+background:#475569;
+color:white;
+width:92%;
+}
+
+.adBtn{
+background:#8b5cf6;
+color:white;
+width:92%;
+}
+
+.close{
+background:#64748b;
+color:white;
+}
+
+
+/* GAME */
+
+.gameTitle{
+font-size:27px;
+font-weight:bold;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin:14px 0;
+}
+
+.stat{
+background:rgba(255,255,255,.11);
+padding:11px 5px;
+border-radius:14px;
+font-size:14px;
+}
+
+.targetBox{
+background:rgba(255,255,255,.08);
+border-radius:25px;
+padding:10px;
+margin:15px 0;
+}
+
+.target{
+font-size:80px;
+animation:float 1.5s infinite ease-in-out;
+}
+
+.timerBox{
+height:10px;
+background:#334155;
+border-radius:20px;
+overflow:hidden;
+margin:10px 0 18px;
+}
+
+.timerBar{
+height:100%;
+width:100%;
+background:#22c55e;
+transition:width 1s linear;
+}
+
+.colors{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.colorBtn{
+height:75px;
+font-size:30px;
+color:white;
+}
+
+.red{
+background:#ef4444;
+}
+
+.blue{
+background:#3b82f6;
+}
+
+.green{
+background:#22c55e;
+}
+
+.yellow{
+background:#eab308;
+color:#111!important;
+}
+
+.message{
+min-height:35px;
+font-size:19px;
+font-weight:bold;
+margin:8px;
+}
+
+.inventory{
+background:rgba(34,197,94,.12);
+padding:12px;
+border-radius:15px;
+margin:12px 0;
+}
+
+
+/* DAILY */
+
+.dailyCard{
+background:linear-gradient(
+135deg,
+rgba(236,72,153,.25),
+rgba(139,92,246,.25)
+);
+padding:20px;
+border-radius:20px;
+margin:15px 0;
+}
+
+.dailyNumber{
+font-size:42px;
+font-weight:bold;
+}
+
+.progress{
+height:12px;
+background:#334155;
+border-radius:20px;
+overflow:hidden;
+margin:10px 0;
+}
+
+.progressBar{
+height:100%;
+width:0%;
+background:#22c55e;
+transition:.4s;
+}
+
+
+/* SHOP */
+
+.shop{
+background:rgba(15,23,42,.96);
+padding:18px;
+border-radius:22px;
+margin-top:10px;
+}
+
+.shopItem{
+background:rgba(255,255,255,.08);
+padding:14px;
+border-radius:17px;
+margin:12px 0;
+}
+
+.buy{
+background:#2563eb;
+color:white;
+}
+
+
+/* GAME OVER */
+
+.gameOver{
+margin-top:40px;
+font-size:38px;
+font-weight:bold;
+animation:pulse 1.5s infinite;
+}
+
+.finalScore{
+font-size:60px;
+font-weight:bold;
+}
+
+
+/* POPUP */
+
+#popup{
+position:fixed;
+left:50%;
+top:40%;
+transform:translate(-50%,-50%);
+background:#111827;
+padding:25px;
+border-radius:22px;
+font-size:27px;
+font-weight:bold;
+display:none;
+z-index:100;
+box-shadow:0 10px 40px rgba(0,0,0,.5);
+}
+
+#popup.show{
+display:block;
+animation:popup .6s forwards;
+}
+
+
+/* ANIMATIONS */
+
+@keyframes pulse{
+
+0%,100%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.05);
+}
+
+}
+
+@keyframes float{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-7px);
+}
+
+}
+
+@keyframes popup{
+
+0%{
+transform:translate(-50%,-50%) scale(.5);
+opacity:0;
+}
+
+60%{
+transform:translate(-50%,-50%) scale(1.15);
+opacity:1;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(1);
+opacity:1;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- HOME -->
+
+<div id="home" class="screen active">
+
+<div class="logo">
+ONE MORE LEVEL
+</div>
+
+<div class="tagline">
+⚡ Think Fast. React Faster. ⚡
+</div>
+
+
+<div class="card">
+
+<h2>👋 WELCOME!</h2>
+
+<p>
+How far can you go?
+</p>
+
+<p>
+🏆 Best Score:
+<b id="homeBest">0</b>
+</p>
+
+<p>
+🔥 Best Streak:
+<b id="homeBestStreak">0</b>
+</p>
+
+<p>
+🪙 Coins:
+<b id="homeCoins">0</b>
+</p>
+
+</div>
+
+
+<button
+class="play"
+onclick="startGame()">
+
+🎮 PLAY NOW
+
+</button>
+
+
+<button
+class="dailyBtn"
+onclick="openDaily()">
+
+📅 DAILY CHALLENGE
+
+</button>
+
+
+<button
+class="shopBtn"
+onclick="openShop()">
+
+🛒 COIN SHOP
+
+</button>
+
+
+<button
+class="soundBtn"
+onclick="toggleSound()">
+
+🔊 SOUND:
+<span id="soundText">
+ON
+</span>
+
+</button>
+
+</div>
+
+
+<!-- DAILY CHALLENGE -->
+
+<div id="daily" class="screen">
+
+<h1>📅 DAILY CHALLENGE</h1>
+
+
+<div class="dailyCard">
+
+<h2>
+🎯 Today's Mission
+</h2>
+
+<p>
+Get <b>20 correct answers</b>
+</p>
+
+<div class="dailyNumber">
+
+<span id="dailyProgress">
+0
+</span>
+
+/ 20
+
+</div>
+
+
+<div class="progress">
+
+<div
+id="dailyBar"
+class="progressBar">
+</div>
+
+</div>
+
+
+<p>
+Reward:
+🎁 <b>100 🪙</b>
+</p>
+
+<p id="dailyStatus">
+Keep going!
+</p>
+
+</div>
+
+
+<button
+class="play"
+onclick="startGame()">
+
+🎮 PLAY CHALLENGE
+
+</button>
+
+
+<button
+class="close"
+onclick="goHome()">
+
+🏠 HOME
+
+</button>
+
+</div>
+
+
+<!-- GAME -->
+
+<div id="game" class="screen">
+
+<div class="gameTitle">
+🔥 ONE MORE LEVEL
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+❤️ <span id="lives">3</span>
+</div>
+
+<div class="stat">
+🪙 <span id="coins">0</span>
+</div>
+
+<div class="stat">
+🏆 <span id="score">0</span>
+</div>
+
+<div class="stat">
+🆙 <span id="level">1</span>
+</div>
+
+<div class="stat">
+🔥 <span id="streak">0</span>
+</div>
+
+<div class="stat">
+⏱️ <span id="timer">5</span>
+</div>
+
+</div>
+
+
+<div class="inventory">
+
+🛡️ Shields:
+<span id="shieldCount">0</span>
+
+&nbsp;&nbsp;
+
+⏱️ Boosts:
+<span id="boostCount">0</span>
+
+</div>
+
+
+<div class="targetBox">
+
+<div
+id="target"
+class="target">
+
+🔴
+
+</div>
+
+</div>
+
+
+<div class="timerBox">
+
+<div
+id="timerBar"
+class="timerBar">
+</div>
+
+</div>
+
+
+<div
+id="message"
+class="message">
+</div>
+
+
+<div class="colors">
+
+<button
+class="colorBtn red"
+onclick="answer('red')">
+
+🔴
+
+</button>
+
+
+<button
+class="colorBtn blue"
+onclick="answer('blue')">
+
+🔵
+
+</button>
+
+
+<button
+class="colorBtn green"
+onclick="answer('green')">
+
+🟢
+
+</button>
+
+
+<button
+class="colorBtn yellow"
+onclick="answer('yellow')">
+
+🟡
+
+</button>
+
+</div>
+
+
+<button
+class="shopBtn"
+onclick="openShop()">
+
+🛒 SHOP
+
+</button>
+
+</div>
+
+
+<!-- GAME OVER -->
+
+<div id="gameOver" class="screen">
+
+<div class="gameOver">
+
+💀 GAME OVER
+
+</div>
+
+
+<p>
+YOUR SCORE
+</p>
+
+
+<div
+id="finalScore"
+class="finalScore">
+
+0
+
+</div>
+
+
+<p>
+🏆 Best Score:
+<span id="bestScore">
+0
+</span>
+</p>
+
+
+<p>
+🔥 Best Streak:
+<span id="finalBestStreak">
+0
+</span>
+</p>
+
+
+<button
+class="play"
+onclick="startGame()">
+
+🔄 PLAY AGAIN
+
+</button>
+
+
+<button
+class="shopBtn"
+onclick="openShop()">
+
+🛒 SHOP
+
+</button>
+
+
+<button
+class="close"
+onclick="goHome()">
+
+🏠 HOME
+
+</button>
+
+</div>
+
+
+<!-- SHOP -->
+
+<div id="shop" class="screen">
+
+<div class="shop">
+
+<h1>🛒 COIN SHOP</h1>
+
+
+<h2>
+
+🪙
+<span id="shopCoins">
+0
+</span>
+
+</h2>
+
+
+<div class="shopItem">
+
+<h3>
+❤️ +1 LIFE
+</h3>
+
+<p>
+Cost: 50 🪙
+</p>
+
+<button
+class="buy"
+onclick="buyLife()">
+
+BUY
+
+</button>
+
+</div>
+
+
+<div class="shopItem">
+
+<h3>
+⏱️ +3 SECONDS
+</h3>
+
+<p>
+Cost: 75 🪙
+</p>
+
+<button
+class="buy"
+onclick="buyTime()">
+
+BUY
+
+</button>
+
+</div>
+
+
+<div class="shopItem">
+
+<h3>
+🛡️ SHIELD
+</h3>
+
+<p>
+Cost: 150 🪙
+</p>
+
+<button
+class="buy"
+onclick="buyShield()">
+
+BUY
+
+</button>
+
+</div>
+
+
+<div class="shopItem">
+
+<h3>
+🎨 NEW THEME
+</h3>
+
+<p>
+Cost: 500 🪙
+</p>
+
+<button
+class="buy"
+onclick="buyTheme()">
+
+BUY
+
+</button>
+
+</div>
+
+
+<div class="inventory">
+
+<b>
+YOUR POWER-UPS
+</b>
+
+<p>
+❤️ Extra Lives:
+<span id="shopLives">0</span>
+</p>
+
+<p>
+⏱️ Time Boosts:
+<span id="shopBoosts">0</span>
+</p>
+
+<p>
+🛡️ Shields:
+<span id="shopShields">0</span>
+</p>
+
+<p>
+🎨 Theme:
+<span id="themeStatus">
+Locked
+</span>
+</p>
+
+</div>
+
+
+<button
+class="adBtn"
+onclick="watchAd()">
+
+🎬 WATCH AD → +25 🪙
+
+</button>
+
+
+<button
+class="close"
+onclick="closeShop()">
+
+✖ CLOSE
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LEVEL POPUP -->
+
+<div id="popup">
+
+🎉 LEVEL UP!
+
+</div>
+
+
+<script>
+
+
+/* GAME VARIABLES */
+
+let lives = 3;
+
+let score = 0;
+
+let level = 1;
+
+let streak = 0;
+
+let timer = 5;
+
+let correctAnswers = 0;
+
+let timerInterval;
+
+let adUsed = false;
+
+let soundOn = true;
+
+let previousLevel = 1;
+
+
+/* SAVED DATA */
+
+let coins =
+Number(localStorage.getItem("coins")) || 0;
+
+
+let bestScore =
+Number(localStorage.getItem("bestScore")) || 0;
+
+
+let bestStreak =
+Number(localStorage.getItem("bestStreak")) || 0;
+
+
+let extraLives =
+Number(localStorage.getItem("extraLives")) || 0;
+
+
+let timeBoosts =
+Number(localStorage.getItem("timeBoosts")) || 0;
+
+
+let shields =
+Number(localStorage.getItem("shields")) || 0;
+
+
+let themeUnlocked =
+localStorage.getItem("themeUnlocked")
+=== "true";
+
+
+let soundSaved =
+localStorage.getItem("soundOn");
+
+
+if(soundSaved !== null){
+
+soundOn =
+soundSaved === "true";
+
+}
+
+
+/* DAILY */
+
+let dailyCorrect =
+Number(localStorage.getItem("dailyCorrect")) || 0;
+
+
+let dailyRewardClaimed =
+localStorage.getItem("dailyRewardClaimed")
+=== "true";
+
+
+let savedDate =
+localStorage.getItem("dailyDate");
+
+
+let today =
+new Date().toDateString();
+
+
+/* RESET DAILY CHALLENGE */
+
+if(savedDate !== today){
+
+dailyCorrect = 0;
+
+dailyRewardClaimed = false;
+
+localStorage.setItem(
+"dailyCorrect",
+"0"
+);
+
+localStorage.setItem(
+"dailyRewardClaimed",
+"false"
+);
+
+localStorage.setItem(
+"dailyDate",
+today
+);
+
+}
+
+
+const colors = [
+"red",
+"blue",
+"green",
+"yellow"
+];
+
+
+/* SCREEN */
+
+function showScreen(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(screen=>{
+
+screen.classList.remove(
+"active"
+);
+
+});
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+
+/* HOME */
+
+function goHome(){
+
+clearInterval(timerInterval);
+
+showScreen("home");
+
+updateHome();
+
+}
+
+
+/* SOUND */
+
+function sound(type){
+
+if(!soundOn){
+
+return;
+
+}
+
+try{
+
+let audio =
+new AudioContext();
+
+let oscillator =
+audio.createOscillator();
+
+let gain =
+audio.createGain();
+
+oscillator.connect(gain);
+
+gain.connect(audio.destination);
+
+
+if(type === "correct"){
+
+oscillator.frequency.value =
+700;
+
+}
+
+else if(type === "wrong"){
+
+oscillator.frequency.value =
+180;
+
+}
+
+else{
+
+oscillator.frequency.value =
+900;
+
+}
+
+
+gain.gain.value = .08;
+
+oscillator.start();
+
+oscillator.stop(
+audio.currentTime + .12
+);
+
+}
+
+catch(e){}
+
+}
+
+
+/* SOUND BUTTON */
+
+function toggleSound(){
+
+soundOn = !soundOn;
+
+localStorage.setItem(
+"soundOn",
+soundOn
+);
+
+document.getElementById(
+"soundText"
+).textContent =
+soundOn ? "ON" : "OFF";
+
+}
+
+
+/* HOME UPDATE */
+
+function updateHome(){
+
+document.getElementById(
+"homeCoins"
+).textContent =
+coins;
+
+
+document.getElementById(
+"homeBest"
+).textContent =
+bestScore;
+
+
+document.getElementById(
+"homeBestStreak"
+).textContent =
+bestStreak;
+
+
+document.getElementById(
+"soundText"
+).textContent =
+soundOn ? "ON" : "OFF";
+
+}
+
+
+/* COINS */
+
+function updateCoins(){
+
+document.getElementById(
+"coins"
+).textContent =
+coins;
+
+
+document.getElementById(
+"homeCoins"
+).textContent =
+coins;
+
+
+document.getElementById(
+"shopCoins"
+).textContent =
+coins;
+
+
+localStorage.setItem(
+"coins",
+coins
+);
+
+}
+
+
+/* DAILY */
+
+function updateDaily(){
+
+document.getElementById(
+"dailyProgress"
+).textContent =
+Math.min(
+dailyCorrect,
+20
+);
+
+
+document.getElementById(
+"dailyBar"
+).style.width =
+Math.min(
+dailyCorrect,
+20
+) * 5 + "%";
+
+
+if(dailyRewardClaimed){
+
+document.getElementById(
+"dailyStatus"
+).textContent =
+"🎉 COMPLETED! Reward claimed.";
+
+}
+
+else if(dailyCorrect >= 20){
+
+coins += 100;
+
+dailyRewardClaimed = true;
+
+localStorage.setItem(
+"dailyRewardClaimed",
+"true"
+);
+
+updateCoins();
+
+document.getElementById(
+"dailyStatus"
+).textContent =
+"🎉 COMPLETED! +100 🪙";
+
+}
+
+else{
+
+document.getElementById(
+"dailyStatus"
+).textContent =
+"Keep going!";
+
+}
+
+}
+
+
+/* OPEN DAILY */
+
+function openDaily(){
+
+updateDaily();
+
+showScreen("daily");
+
+}
+
+
+/* START GAME */
+
+function startGame(){
+
+lives = 3;
+
+score = 0;
+
+level = 1;
+
+streak = 0;
+
+correctAnswers = 0;
+
+adUsed = false;
+
+previousLevel = 1;
+
+showScreen("game");
+
+updateGame();
+
+newRound();
+
+}
+
+
+/* GAME UPDATE */
+
+function updateGame(){
+
+document.getElementById(
+"lives"
+).textContent =
+lives;
+
+
+document.getElementById(
+"coins"
+).textContent =
+coins;
+
+
+document.getElementById(
+"score"
+).textContent =
+score;
+
+
+document.getElementById(
+"level"
+).textContent =
+level;
+
+
+document.getElementById(
+"streak"
+).textContent =
+streak;
+
+
+document.getElementById(
+"shieldCount"
+).textContent =
+shields;
+
+
+document.getElementById(
+"boostCount"
+).textContent =
+timeBoosts;
+
+
+document.getElementById(
+"timer"
+).textContent =
+timer;
+
+
+updateCoins();
+
+}
+
+
+/* NEW ROUND */
+
+function newRound(){
+
+clearInterval(timerInterval);
+
+
+let targetColor =
+colors[
+Math.floor(
+Math.random()*colors.length
+)
+];
+
+
+let emoji = {
+
+red:"🔴",
+
+blue:"🔵",
+
+green:"🟢",
+
+yellow:"🟡"
+
+};
+
+
+document.getElementById(
+"target"
+).textContent =
+emoji[targetColor];
+
+
+document.getElementById(
+"target"
+).dataset.color =
+targetColor;
+
+
+/* TIME */
+
+timer =
+Math.max(
+2,
+5-Math.floor(level/10)
+);
+
+
+/* TIME BOOST */
+
+if(timeBoosts > 0){
+
+timer += 3;
+
+timeBoosts--;
+
+localStorage.setItem(
+"timeBoosts",
+timeBoosts
+);
+
+}
+
+
+document.getElementById(
+"timerBar"
+).style.width =
+"100%";
+
+
+updateGame();
+
+
+let startingTime = timer;
+
+
+timerInterval =
+setInterval(()=>{
+
+timer--;
+
+
+document.getElementById(
+"timer"
+).textContent =
+timer;
+
+
+document.getElementById(
+"timerBar"
+).style.width =
+(timer / startingTime)
+* 100 + "%";
+
+
+if(timer <= 0){
+
+clearInterval(
+timerInterval
+);
+
+loseLife();
+
+}
+
+},1000);
+
+}
+
+
+/* ANSWER */
+
+function answer(color){
+
+let target =
+document.getElementById(
+"target"
+).dataset.color;
+
+
+if(color === target){
+
+clearInterval(
+timerInterval
+);
+
+sound("correct");
+
+
+let oldLevel =
+level;
+
+
+score +=
+10 * level;
+
+
+streak++;
+
+
+correctAnswers++;
+
+
+/* DAILY PROGRESS */
+
+dailyCorrect++;
+
+
+localStorage.setItem(
+"dailyCorrect",
+dailyCorrect
+);
+
+
+updateDaily();
+
+
+/* COINS */
+
+let earnedCoins = 5;
+
+
+if(streak % 5 === 0){
+
+earnedCoins += 20;
+
+document.getElementById(
+"message"
+).textContent =
+"🔥 STREAK BONUS! +20 🪙";
+
+}
+
+else{
+
+document.getElementById(
+"message"
+).textContent =
+"✅ CORRECT! +5 🪙";
+
+}
+
+
+coins +=
+earnedCoins;
+
+
+/* BEST STREAK */
+
+if(streak > bestStreak){
+
+bestStreak =
+streak;
+
+localStorage.setItem(
+"bestStreak",
+bestStreak
+);
+
+}
+
+
+/* LEVEL */
+
+level =
+Math.floor(
+score / 100
+) + 1;
+
+
+/* LEVEL UP */
+
+if(level > oldLevel){
+
+showLevelUp();
+
+}
+
+
+updateGame();
+
+
+setTimeout(()=>{
+
+newRound();
+
+},400);
+
+
+}
+
+else{
+
+loseLife();
+
+}
+
+}
+
+
+/* LOSE LIFE */
+
+function loseLife(){
+
+clearInterval(
+timerInterval
+);
+
+sound("wrong");
+
+
+/* SHIELD */
+
+if(shields > 0){
+
+shields--;
+
+localStorage.setItem(
+"shields",
+shields
+);
+
+document.getElementById(
+"message"
+).textContent =
+"🛡️ SHIELD SAVED YOU!";
+
+updateGame();
+
+
+setTimeout(()=>{
+
+newRound();
+
+},500);
+
+return;
+
+}
+
+
+/* EXTRA LIFE */
+
+if(extraLives > 0){
+
+extraLives--;
+
+lives++;
+
+localStorage.setItem(
+"extraLives",
+extraLives
+);
+
+document.getElementById(
+"message"
+).textContent =
+"❤️ EXTRA LIFE USED!";
+
+updateGame();
+
+
+setTimeout(()=>{
+
+newRound();
+
+},500);
+
+return;
+
+}
+
+
+/* NORMAL LIFE */
+
+lives--;
+
+streak = 0;
+
+
+document.getElementById(
+"message"
+).textContent =
+"❌ WRONG! -1 LIFE";
+
+
+updateGame();
+
+
+if(lives <= 0){
+
+setTimeout(
+gameOver,
+500
+);
+
+}
+
+else{
+
+setTimeout(
+newRound,
+500
+);
+
+}
+
+}
+
+
+/* LEVEL UP */
+
+function showLevelUp(){
+
+let popup =
+document.getElementById(
+"popup"
+);
+
+
+popup.classList.remove(
+"show"
+);
+
+
+void popup.offsetWidth;
+
+
+popup.classList.add(
+"show"
+);
+
+
+sound("level");
+
+
+setTimeout(()=>{
+
+popup.classList.remove(
+"show"
+);
+
+},1200);
+
+}
+
+
+/* GAME OVER */
+
+function gameOver(){
+
+clearInterval(
+timerInterval
+);
+
+
+if(score > bestScore){
+
+bestScore =
+score;
+
+localStorage.setItem(
+"bestScore",
+bestScore
+);
+
+}
+
+
+document.getElementById(
+"finalScore"
+).textContent =
+score;
+
+
+document.getElementById(
+"bestScore"
+).textContent =
+bestScore;
+
+
+document.getElementById(
+"finalBestStreak"
+).textContent =
+bestStreak;
+
+
+showScreen("gameOver");
+
+updateHome();
+
+}
+
+
+/* SHOP */
+
+function openShop(){
+
+clearInterval(
+timerInterval
+);
+
+updateShop();
+
+showScreen("shop");
+
+}
+
+
+function closeShop(){
+
+if(
+document.getElementById(
+"game"
+).classList.contains(
+"active"
+)
+){
+
+showScreen("game");
+
+updateGame();
+
+newRound();
+
+}
+
+else{
+
+goHome();
+
+}
+
+}
+
+
+/* SHOP UPDATE */
+
+function updateShop(){
+
+document.getElementById(
+"shopCoins"
+).textContent =
+coins;
+
+
+document.getElementById(
+"shopLives"
+).textContent =
+extraLives;
+
+
+document.getElementById(
+"shopBoosts"
+).textContent =
+timeBoosts;
+
+
+document.getElementById(
+"shopShields"
+).textContent =
+shields;
+
+
+document.getElementById(
+"themeStatus"
+).textContent =
+themeUnlocked
+? "Unlocked 🎨"
+: "Locked 🔒";
+
+}
+
+
+/* BUY LIFE */
+
+function buyLife(){
+
+if(coins < 50){
+
+alert(
+"❌ You need 50 coins."
+);
+
+return;
+
+}
+
+
+coins -= 50;
+
+extraLives++;
+
+
+localStorage.setItem(
+"extraLives",
+extraLives
+);
+
+
+updateCoins();
+
+updateShop();
+
+
+alert(
+"❤️ Extra Life added!"
+);
+
+}
+
+
+/* BUY TIME */
+
+function buyTime(){
+
+if(coins < 75){
+
+alert(
+"❌ You need 75 coins."
+);
+
+return;
+
+}
+
+
+coins -= 75;
+
+timeBoosts++;
+
+
+localStorage.setItem(
+"timeBoosts",
+timeBoosts
+);
+
+
+updateCoins();
+
+updateShop();
+
+
+alert(
+"⏱️ Time Boost added!"
+);
+
+}
+
+
+/* BUY SHIELD */
+
+function buyShield(){
+
+if(coins < 150){
+
+alert(
+"❌ You need 150 coins."
+);
+
+return;
+
+}
+
+
+coins -= 150;
+
+shields++;
+
+
+localStorage.setItem(
+"shields",
+shields
+);
+
+
+updateCoins();
+
+updateShop();
+
+
+alert(
+"🛡️ Shield added!"
+);
+
+}
+
+
+/* BUY THEME */
+
+function buyTheme(){
+
+if(themeUnlocked){
+
+alert(
+"🎨 Theme already unlocked!"
+);
+
+return;
+
+}
+
+
+if(coins < 500){
+
+alert(
+"❌ You need 500 coins."
+);
+
+return;
+
+}
+
+
+coins -= 500;
+
+themeUnlocked =
+true;
+
+
+localStorage.setItem(
+"themeUnlocked",
+"true"
+);
+
+
+document.body.style.background =
+"linear-gradient(135deg,#581c87,#be185d)";
+
+
+updateCoins();
+
+updateShop();
+
+
+alert(
+"🎨 NEW THEME UNLOCKED!"
+);
+
+}
+
+
+/* WATCH AD DEMO */
+
+function watchAd(){
+
+if(adUsed){
+
+alert(
+"You already watched the demo ad."
+);
+
+return;
+
+}
+
+
+adUsed = true;
+
+coins += 25;
+
+
+updateCoins();
+
+updateShop();
+
+
+alert(
+"🎬 Demo ad completed!\n+25 🪙"
+);
+
+}
+
+
+/* LOAD SAVED THEME */
+
+if(themeUnlocked){
+
+document.body.style.background =
+"linear-gradient(135deg,#581c87,#be185d)";
+
+}
+
+
+/* INITIALIZE */
+
+updateHome();
+
+updateCoins();
+
+updateDaily();
+
+</script>
+  
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service Worker registered"))
+      .catch(error => console.log("Service Worker error:", error));
+  });
+}
+</script>
+
+</body>
+</html>
