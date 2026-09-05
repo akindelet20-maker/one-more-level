@@ -17,9 +17,8 @@
 ],
 "screenshots": [
   {
-    "src": "screenshots/home.png",
-    "sizes": "1080x1920",
-    "type": "image/png",
+    "src": "screenshots/Screenshot_20260905_115858_Mises.jpg",
+    "type": "image/jpeg",
     "form_factor": "narrow"
   }
 ]
